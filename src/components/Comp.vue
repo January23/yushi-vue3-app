@@ -2,14 +2,14 @@
   <div class="con">sssssss</div>
 </template>
 
-<script>
+<script lang="ts">
   export default {
     name:"Comp"
   }
 </script>
 
-<style lang="scss" scoped="">
+<style lang="scss" scoped>
 .con{
-  color:'red'
+  color:red;
 }
 </style>

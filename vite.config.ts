@@ -11,12 +11,5 @@ export default defineConfig({
       "pages":path.resolve(__dirname, "src/pages"),
     },
   },
-  plugins: [vue()],
-  // css:{
-  //   preprocessorOptions:{
-  //     scss:{
-  //       add
-  //     }
-  //   }
-  // }
+  plugins: [vue()]
 })
