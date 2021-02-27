@@ -1,5 +1,5 @@
 <template>
-  <img src="//pic.c-ctrip.com/h5/bnb/pc/i01-0000.png" class="img-default" />
+  <img src="../assets/i01-0000.png" class="img-default" />
 </template>
 
 <script lang="ts" setup>

@@ -26,7 +26,7 @@ const city = store.state.city;
     &::before {
       content: "";
       display: block;
-      background-image: url(//pic.c-ctrip.com/h5/bnb/pci/i01.v1.png?v=3);
+      background-image: url("../assets/i01.v1.png");
       background-size: 480px 412px;
       background-repeat: no-repeat;
       background-position: -452px -136px;
