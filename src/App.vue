@@ -1,11 +1,8 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
   <router-view></router-view>
 </template>
 
 <script lang="ts" setup>
-import HelloWorld from 'comps/HelloWorld.vue'
-import Comp from 'comps/Comp.vue'
 </script>
 
 <style>

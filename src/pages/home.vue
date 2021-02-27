@@ -1,10 +1,9 @@
 <template>
-  <p>this is home page</p>
-  <Comp></Comp>
+  <Header></Header>
 </template>
 
 <script lang="ts" setup>
-import Comp from 'comps/Comp.vue';
+import Header from './Header.vue';
 </script>
 
 <style lang="scss" scoped>

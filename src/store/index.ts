@@ -2,11 +2,13 @@ import { createStore } from 'vuex';
 
 export const store = createStore({
   state: {
-    counter: 1
+    city: {
+      name: '',
+      id: 0
+    }
   },
   mutations: {
-    add(state) {
-      state.counter++;
+    changeCity(state) {
     }
   }
 });
