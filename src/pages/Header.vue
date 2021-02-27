@@ -2,11 +2,11 @@
   <div class="innhome-body-banner">
     <Ad></Ad>
     <div class="other">
-      <span class="title">携程民宿</span>
+      <span class="title">Demo</span>
       <div class="search">
         <Search></Search>
       </div>
-      <span class="desc">携程民宿——高品质民宿预订平台</span>
+      <span class="desc">Demo描述话术</span>
     </div>
   </div>
 </template>

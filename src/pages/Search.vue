@@ -11,10 +11,10 @@
     </div>
     <div class="vertical-line"></div>
     <div class="keyword-con">
-      <input type="text" class="keyword-name" placeholder="关键字/位置/民宿名" />
+      <input type="text" class="keyword-name" placeholder="关键字/位置" />
     </div>
     <!-- commit的名字定义在vuex的store中 -->
-    <button class="search-btn" @click="store.commit(HOME_SEARCH_INN)">搜索民宿</button>
+    <button class="search-btn" @click="store.commit(HOME_SEARCH_INN)">搜索</button>
   </div>
 </template>
 
