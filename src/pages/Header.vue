@@ -45,7 +45,10 @@ import Search from './Search.vue';
 
   .search {
     position: absolute;
-    bottom: 6rem;
+    bottom: 3rem;
+    width: 50rem;
+    transform: translate(-50%, -50%);
+    left: 50%;
   }
 
   .desc {
