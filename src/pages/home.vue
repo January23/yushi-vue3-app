@@ -1,11 +1,10 @@
 <template>
   <p>this is home page</p>
+  <Comp></Comp>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'Home'
-}
+<script lang="ts" setup>
+import Comp from 'comps/Comp.vue';
 </script>
 
 <style lang="scss" scoped>
