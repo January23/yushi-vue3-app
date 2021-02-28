@@ -2,7 +2,7 @@
   <div class="calendar-con">
     <div class="calendar-panel panel-left">
       <div class="calendar-header">
-        <div class="calendar-left-arraw" @click="preMonthClick()"></div>
+        <div class="calendar-arraw" @click="preMonthClick()">&lt;</div>
         <span class="calendar-month">{{ format(new Date(current), 'yyyy年M月') }}</span>
       </div>
       <div class="calendar-week">
@@ -14,8 +14,11 @@
         <span
           :class="{
             'day-item': true,
+            'hide-border': !item,
             'is-sunday': item?.getDay() === 0 || item?.getDay() === 6,
-            'is-disable': item < new Date()
+            'is-disable': item < today,
+            'is-selected': isSameDay(item, selected.checkin) || isSameDay(item, selected.checkout),
+            'is-in-range': isInRange(item, selected.checkin, selected.checkout)
           }"
           v-for="item in currentMonthDays"
           @click="selectDay(item)"
@@ -25,7 +28,7 @@
     <div class="calendar-panel panel-right">
       <div class="calendar-header">
         <span class="calendar-month">{{ format(addMonths(new Date(current), 1), 'yyyy年M月') }}</span>
-        <div class="calendar-left-arraw" @click="nextMonthClick()"></div>
+        <div class="calendar-arraw" @click="nextMonthClick()">&gt;</div>
       </div>
       <div class="calendar-week">
         <span :class="{
@@ -36,8 +39,11 @@
         <span
           :class="{
             'day-item': true,
+            'hide-border': !item,
             'is-sunday': item?.getDay() === 0 || item?.getDay() === 6,
-            'is-disable': item < new Date()
+            'is-disable': item < today,
+            'is-selected': isSameDay(item, selected.checkin) || isSameDay(item, selected.checkout),
+            'is-in-range': isInRange(item, selected.checkin, selected.checkout)
           }"
           v-for="item in nextMonthDays"
           @click="selectDay(item)"
@@ -47,10 +53,10 @@
   </div>
 </template>
 
-<script  setup lang="ts">
+<script setup lang="ts">
 import { useStore } from 'vuex';
 import { defineProps, reactive, ref } from 'vue';
-import { format, addMonths, isLeapYear } from 'date-fns';
+import { format, addMonths, isLeapYear, addDays, differenceInDays } from 'date-fns';
 
 const props = defineProps({
   month: Number,
@@ -69,6 +75,11 @@ const initArray: Date[] = [];
 const initNextMonthArray: Date[] = [];
 const currentMonthDays = reactive(initArray);
 const nextMonthDays = reactive(initNextMonthArray);
+const today = new Date();
+today.setHours(0);
+today.setMinutes(0);
+today.setSeconds(0);
+today.setMilliseconds(0);
 
 const getMonthDays = (current: Date): Array<Date> => {
   let year = current.getFullYear();
@@ -111,16 +122,75 @@ const nextMonthClick = () => {
   current.value = format(month, 'yyyy-MM-dd');
 }
 
-const selectDay = (day: Date) => {
+const isSameDay = (start?: Date, end?: Date) => {
+  return start?.getFullYear() === end?.getFullYear() && start?.getMonth() === end?.getMonth() && start?.getDate() === end?.getDate();
 }
+
+const isInRange = (current: Date, start?: Date, end?: Date) => {
+  if (!start || !end || !current) {
+    return false;
+  }
+  current.setHours(23);
+  current.setMinutes(59);
+  current.setSeconds(59);
+  current.setMilliseconds(999);
+
+  if (current < end) {
+    current.setHours(0);
+    current.setMinutes(0);
+    current.setSeconds(0);
+    current.setMilliseconds(0);
+
+    return current > start;
+  }
+  return false;
+}
+
+interface Selected {
+  firsted: boolean,
+  checkin?: Date,
+  checkout?: Date,
+  mouseOver?: boolean
+}
+
+const initSelected: Selected = {
+  firsted: true,
+  checkin: checkin,
+  checkout: props.checkout ? new Date(props.checkout) : addDays(checkin, 1)
+}
+
+const selected = reactive(initSelected)
+
+const selectDay = (day: Date) => {
+  if (selected.firsted) {
+    selected.checkin = day;
+    selected.checkout = undefined;
+    selected.firsted = false;
+  }
+  else {
+    if (!selected.checkin || day <= selected.checkin) {
+      selected.checkin = day;
+      selected.checkout = undefined;
+    }
+    else {
+      selected.firsted = true;
+      selected.checkout = day;
+      store.state.date.checkin = format(selected.checkin, 'yyyy-MM-dd');
+      store.state.date.checkout = format(selected.checkout, 'yyyy-MM-dd');
+    }
+  }
+}
+
 
 </script>
 
 <style lang="scss" scoped>
 .calendar-con {
   display: flex;
-  background-color: #ededed;
   width: 32rem;
+  border: solid 1px #ece7e7;
+  padding-bottom: 1.8rem;
+  overflow: hidden;
 
   .calendar-panel {
     flex: 1;
@@ -129,10 +199,13 @@ const selectDay = (day: Date) => {
       display: flex;
       margin-top: 1.8rem;
 
-      .calendar-left-arraw {
+      .calendar-arraw {
         border: solid 1px #ccc;
         width: 1.6rem;
         height: 1.6rem;
+        align-items: center;
+        justify-content: center;
+        display: flex;
       }
 
       .calendar-month {
@@ -167,15 +240,31 @@ const selectDay = (day: Date) => {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 14.28%;
+        width: 13.8%;
         height: 2rem;
+        border: solid 1px #524f4f;
+        margin: 0 0 -1px -1px;
+        color: #666;
+        font-size: 0.7rem;
+
+        &.hide-border {
+          border-color: transparent;
+        }
 
         &.is-sunday {
-          color: rgb(255, 38, 0);
+          color: red;
         }
 
         &.is-disable {
           color: rgb(204, 193, 193);
+        }
+
+        &.is-selected {
+          color: #ff8440;
+        }
+
+        &.is-in-range {
+          color: #ffc3b8;
         }
       }
     }
