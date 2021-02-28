@@ -1,3 +1,4 @@
+import { format, addDays } from 'date-fns';
 import { createStore } from 'vuex';
 import { HOME_SEARCH_INN } from './mutation-type';
 
@@ -8,8 +9,8 @@ export const store = createStore({
       id: 0
     },
     date: {
-      checkin: '',
-      checkout: '',
+      checkin: format(new Date(), 'yyyy-MM-dd'),
+      checkout: format(addDays(new Date(), 1), 'yyyy-MM-dd'),
       nights: 1
     },
     keyword: {}

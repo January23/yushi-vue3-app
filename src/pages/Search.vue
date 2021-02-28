@@ -5,9 +5,9 @@
     </div>
     <div class="vertical-line"></div>
     <div class="date-con">
-      <span class="date-text">2021-02-27 周六</span>
-      <div class="date-nights date-text">共1晚</div>
-      <span class="date-text">2021-02-28 周日</span>
+      <span class="date-text">{{ date.checkin }} 周{{ WEEKS[new Date(date.checkin).getDay()] }}</span>
+      <div class="date-nights date-text">共{{ date.nights }}晚</div>
+      <span class="date-text">{{ date.checkout }} 周{{ WEEKS[new Date(date.checkout).getDay()] }}</span>
     </div>
     <div class="vertical-line"></div>
     <div class="keyword-con">
@@ -21,8 +21,11 @@
 <script lang="ts" setup>
 import { useStore } from 'vuex';
 import { HOME_SEARCH_INN } from '../store/mutation-type';
+import { WEEKS } from '../utils/contants';
+
 const store = useStore();
 const city = store.state.city;
+const date = store.state.date;
 </script>
 
 <style lang="scss" scoped="">

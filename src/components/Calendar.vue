@@ -56,7 +56,8 @@
 <script setup lang="ts">
 import { useStore } from 'vuex';
 import { defineProps, reactive, ref } from 'vue';
-import { format, addMonths, isLeapYear, addDays, differenceInDays } from 'date-fns';
+import { format, addMonths, isLeapYear, addDays } from 'date-fns';
+import { WEEKENDS, WEEKS, MonthDay } from '../utils/contants';
 
 const props = defineProps({
   month: Number,
@@ -65,9 +66,6 @@ const props = defineProps({
 });
 
 const store = useStore();
-const WEEKS = ["日", "一", "二", "三", "四", "五", "六"];
-const WEEKENDS = ["日", "六"];
-const MonthDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const checkin = props.checkin ? new Date(props.checkin) : new Date();
 
 const current = ref(format(checkin, 'yyyy-MM-dd'));
@@ -177,6 +175,7 @@ const selectDay = (day: Date) => {
       selected.checkout = day;
       store.state.date.checkin = format(selected.checkin, 'yyyy-MM-dd');
       store.state.date.checkout = format(selected.checkout, 'yyyy-MM-dd');
+      store.state.date.nights = Math.floor((selected.checkout.getTime() - selected.checkin.getTime()) / 86400000);
     }
   }
 }
