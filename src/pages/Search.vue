@@ -4,7 +4,7 @@
       <input class="city-name" type="text" placeholder="城市目的地" v-model="city.name" />
     </div>
     <div class="vertical-line"></div>
-    <div class="date-con">
+    <div class="date-con" @click="store.commit(HOME_SHOW_CALENDAR)">
       <span class="date-text">{{ date.checkin }} 周{{ WEEKS[new Date(date.checkin).getDay()] }}</span>
       <div class="date-nights date-text">共{{ date.nights }}晚</div>
       <span class="date-text">{{ date.checkout }} 周{{ WEEKS[new Date(date.checkout).getDay()] }}</span>
@@ -15,17 +15,20 @@
     </div>
     <!-- commit的名字定义在vuex的store中 -->
     <button class="search-btn" @click="store.commit(HOME_SEARCH_INN)">搜索</button>
+    <Calendar v-if="store.state.showCalendar" :month="7" checkin="2021-03-01" checkout="2021-03-02"></Calendar>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useStore } from 'vuex';
-import { HOME_SEARCH_INN } from '../store/mutation-type';
+import { HOME_SEARCH_INN, HOME_SHOW_CALENDAR } from '../store/mutation-type';
 import { WEEKS } from '../utils/contants';
+import Calendar from '../components/Calendar.vue';
 
 const store = useStore();
 const city = store.state.city;
 const date = store.state.date;
+
 </script>
 
 <style lang="scss" scoped="">

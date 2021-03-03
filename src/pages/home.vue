@@ -1,11 +1,18 @@
 <template>
   <Header></Header>
-  <Calendar :month="7" checkin="2021-03-01" checkout="2021-03-02"></Calendar>
 </template>
 
 <script lang="ts" setup>
+import { useStore } from 'vuex';
 import Header from './Header.vue';
-import Calendar from '../components/Calendar.vue';
+import { HOME_SHOW_CALENDAR } from '../store/mutation-type';
+
+let store = useStore();
+
+document.addEventListener('click', (e) => {
+  // store.commit(HOME_SHOW_CALENDAR);
+})
+
 </script>
 
 <style lang="scss" scoped>

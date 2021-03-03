@@ -58,6 +58,7 @@ import { useStore } from 'vuex';
 import { defineProps, reactive, ref } from 'vue';
 import { format, addMonths, isLeapYear, addDays } from 'date-fns';
 import { WEEKENDS, WEEKS, MonthDay } from '../utils/contants';
+import { HOME_SHOW_CALENDAR } from '../store/mutation-type';
 
 const props = defineProps({
   month: Number,
@@ -176,6 +177,7 @@ const selectDay = (day: Date) => {
       store.state.date.checkin = format(selected.checkin, 'yyyy-MM-dd');
       store.state.date.checkout = format(selected.checkout, 'yyyy-MM-dd');
       store.state.date.nights = Math.floor((selected.checkout.getTime() - selected.checkin.getTime()) / 86400000);
+      store.commit(HOME_SHOW_CALENDAR);
     }
   }
 }
@@ -185,11 +187,15 @@ const selectDay = (day: Date) => {
 
 <style lang="scss" scoped>
 .calendar-con {
+  position: absolute;
   display: flex;
   width: 32rem;
   border: solid 1px #ece7e7;
   padding-bottom: 1.8rem;
   overflow: hidden;
+  top: 5rem;
+  z-index: 200;
+  background: white;
 
   .calendar-panel {
     flex: 1;
