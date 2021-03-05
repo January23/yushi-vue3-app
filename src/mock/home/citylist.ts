@@ -1,4 +1,3 @@
-import { CityInfo } from './citylist';
 import { plainToClass } from 'class-transformer';
 
 export class CityInfo {

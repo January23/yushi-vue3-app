@@ -9,23 +9,8 @@
         @click="onClick()"
       />
       <div v-if="showCity" class="citylist-con">
-        <div class="city-group-con">
-          <div class="group-tab">
-            <span
-              :class="{ 'gourp-name': true, active: gindex === currentGroupTab }"
-              v-for="(group, gindex) in CityList"
-              @click="selectTab(gindex)"
-            >{{ group.getName() }}</span>
-          </div>
-          <div class="city-tab">
-            <span
-              class="city-item"
-              v-for="(city, cindex) in CityList[currentGroupTab].getCities()"
-              :key="cindex"
-              @click="cityChange(city)"
-            >{{ city.getName() }}</span>
-          </div>
-        </div>
+        <!--父组件定义一个自定义emit，跟子组件一致就行-->
+        <CityGroup @changeCityVisable="onClick()"></CityGroup>
       </div>
     </div>
     <div class="vertical-line"></div>
@@ -46,33 +31,20 @@
 
 <script lang="ts" setup>
 import { useStore } from 'vuex';
+import { ref } from 'vue';
 import { HOME_SEARCH_INN, HOME_SHOW_CALENDAR } from '../store/mutation-type';
 import { WEEKS } from '../utils/contants';
 import Calendar from '../components/Calendar.vue';
-import { CityInfo, CityList } from '../mock/home/citylist';
-import { ref } from 'vue';
+import CityGroup from '../components/CityGroup.vue';
 
 const store = useStore();
 const city = store.state.city;
 const date = store.state.date;
-
 const showCity = ref(false);
-const currentGroupTab = ref(0);
 
 const onClick = () => {
   showCity.value = !showCity.value;
 }
-
-const selectTab = (index: number) => {
-  currentGroupTab.value = index;
-}
-
-const cityChange = (item: CityInfo) => {
-  console.log(item)
-  city.name = item.getName();
-  city.id = item.getId();
-}
-
 </script>
 
 <style lang="scss" scoped="">
@@ -117,47 +89,6 @@ const cityChange = (item: CityInfo) => {
       background: white;
       z-index: 1;
       flex-direction: column;
-
-      .city-group-con {
-        display: flex;
-        font-size: 0.7rem;
-        padding: 1.5rem;
-        width: 31rem;
-        flex-direction: column;
-
-        .group-tab {
-          display: flex;
-          width: 100%;
-          justify-content: center;
-          align-items: center;
-
-          .gourp-name {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            line-height: 2rem;
-
-            &.active {
-              color: orange;
-            }
-          }
-        }
-
-        .city-tab {
-          flex: 1;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-wrap: wrap;
-          max-height: 18rem;
-
-          .city-item {
-            flex: 1;
-            display: flex;
-            justify-content: space-around;
-          }
-        }
-      }
     }
   }
 
