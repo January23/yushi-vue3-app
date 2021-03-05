@@ -49,6 +49,7 @@ import Search from './Search.vue';
     width: 50rem;
     transform: translate(-50%, -50%);
     left: 50%;
+    z-index: 1;
   }
 
   .desc {

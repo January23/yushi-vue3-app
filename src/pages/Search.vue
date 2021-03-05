@@ -1,7 +1,32 @@
 <template>
   <div class="innhome-body-search">
     <div class="city-con">
-      <input class="city-name" type="text" placeholder="城市目的地" v-model="city.name" />
+      <input
+        class="city-name"
+        type="text"
+        placeholder="城市目的地"
+        v-model="city.name"
+        @click="onClick()"
+      />
+      <div v-if="showCity" class="citylist-con">
+        <div class="city-group-con">
+          <div class="group-tab">
+            <span
+              :class="{ 'gourp-name': true, active: gindex === currentGroupTab }"
+              v-for="(group, gindex) in CityList"
+              @click="selectTab(gindex)"
+            >{{ group.getName() }}</span>
+          </div>
+          <div class="city-tab">
+            <span
+              class="city-item"
+              v-for="(city, cindex) in CityList[currentGroupTab].getCities()"
+              :key="cindex"
+              @click="cityChange(city)"
+            >{{ city.getName() }}</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="vertical-line"></div>
     <div class="date-con" @click="store.commit(HOME_SHOW_CALENDAR)">
@@ -24,10 +49,29 @@ import { useStore } from 'vuex';
 import { HOME_SEARCH_INN, HOME_SHOW_CALENDAR } from '../store/mutation-type';
 import { WEEKS } from '../utils/contants';
 import Calendar from '../components/Calendar.vue';
+import { CityInfo, CityList } from '../mock/home/citylist';
+import { ref } from 'vue';
 
 const store = useStore();
 const city = store.state.city;
 const date = store.state.date;
+
+const showCity = ref(false);
+const currentGroupTab = ref(0);
+
+const onClick = () => {
+  showCity.value = !showCity.value;
+}
+
+const selectTab = (index: number) => {
+  currentGroupTab.value = index;
+}
+
+const cityChange = (item: CityInfo) => {
+  console.log(item)
+  city.name = item.getName();
+  city.id = item.getId();
+}
 
 </script>
 
@@ -63,6 +107,57 @@ const date = store.state.date;
       box-sizing: border-box;
       max-width: 6rem;
       outline: 0;
+    }
+
+    .citylist-con {
+      position: absolute;
+      display: flex;
+      left: 0;
+      top: 100%;
+      background: white;
+      z-index: 1;
+      flex-direction: column;
+
+      .city-group-con {
+        display: flex;
+        font-size: 0.7rem;
+        padding: 1.5rem;
+        width: 31rem;
+        flex-direction: column;
+
+        .group-tab {
+          display: flex;
+          width: 100%;
+          justify-content: center;
+          align-items: center;
+
+          .gourp-name {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            line-height: 2rem;
+
+            &.active {
+              color: orange;
+            }
+          }
+        }
+
+        .city-tab {
+          flex: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-wrap: wrap;
+          max-height: 18rem;
+
+          .city-item {
+            flex: 1;
+            display: flex;
+            justify-content: space-around;
+          }
+        }
+      }
     }
   }
 
