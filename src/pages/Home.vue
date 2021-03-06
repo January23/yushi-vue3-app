@@ -1,13 +1,15 @@
 <template>
   <Header></Header>
   <CouponEntrance></CouponEntrance>
+  <HotDest></HotDest>
 </template>
 
 <script lang="ts" setup>
 import { useStore } from 'vuex';
 import Header from './Header.vue';
 import CouponEntrance from '../components/CouponEntrance.vue';
-import { HOME_SHOW_CALENDAR } from '../store/mutation-type';
+import HotDest from './HotDest.vue';
+
 
 const store = useStore();
 
