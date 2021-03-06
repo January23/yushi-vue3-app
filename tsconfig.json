@@ -9,12 +9,14 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "strictPropertyInitialization": false,
+    "newLine": "lf",
     "lib": [
       "esnext",
       "dom"
     ],
     "types": [
-      "vite/client"
+      "vite/client",
+      "node"
     ]
   },
   "include": [
