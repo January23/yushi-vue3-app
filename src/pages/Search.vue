@@ -86,9 +86,10 @@ const onClick = () => {
       display: flex;
       left: 0;
       top: 100%;
-      background: white;
+      background: #eeeeee;
       z-index: 1;
       flex-direction: column;
+      overflow: auto;
     }
   }
 
