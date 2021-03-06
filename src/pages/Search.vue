@@ -1,17 +1,7 @@
 <template>
   <div class="innhome-body-search">
     <div class="city-con">
-      <input
-        class="city-name"
-        type="text"
-        placeholder="城市目的地"
-        v-model="city.name"
-        @click="onClick()"
-      />
-      <div v-if="showCity" class="citylist-con">
-        <!--父组件定义一个自定义emit，跟子组件一致就行-->
-        <CityGroup @changeCityVisable="onClick()"></CityGroup>
-      </div>
+      <CityGroup></CityGroup>
     </div>
     <div class="vertical-line"></div>
     <div class="date-con" @click="store.commit(HOME_SHOW_CALENDAR)">
@@ -31,20 +21,14 @@
 
 <script lang="ts" setup>
 import { useStore } from 'vuex';
-import { ref } from 'vue';
 import { HOME_SEARCH_INN, HOME_SHOW_CALENDAR } from '../store/mutation-type';
 import { WEEKS } from '../utils/contants';
 import Calendar from '../components/Calendar.vue';
 import CityGroup from '../components/CityGroup.vue';
 
 const store = useStore();
-const city = store.state.city;
 const date = store.state.date;
-const showCity = ref(false);
 
-const onClick = () => {
-  showCity.value = !showCity.value;
-}
 </script>
 
 <style lang="scss" scoped="">
@@ -71,25 +55,6 @@ const onClick = () => {
       margin-left: 0.8rem;
       width: 28px;
       height: 28px;
-    }
-
-    .city-name {
-      border: none;
-      height: 3rem;
-      box-sizing: border-box;
-      max-width: 6rem;
-      outline: 0;
-    }
-
-    .citylist-con {
-      position: absolute;
-      display: flex;
-      left: 0;
-      top: 100%;
-      background: #eeeeee;
-      z-index: 1;
-      flex-direction: column;
-      overflow: auto;
     }
   }
 
